@@ -3,22 +3,77 @@
 
 <!-- css -->
 {% block css %}
-    
+
 {% endblock css %}
+
+<!-- Active nav links -->
+{% block homeactive %}active{% endblock homeactive %}
 
 
 <!-- BODY -->
 {% block body %}
-    <div class="container">
-        <h1>Home</h1>
-        <p class="mt-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo doloribus ducimus incidunt minus sit! Repellendus cumque provident doloremque ipsam aliquam ad! Cumque blanditiis pariatur distinctio sapiente, soluta officiis doloribus? Impedit!</p>
-
+<div class="container">
+    <div class="p-5 mb-4 bg-body-tertiary rounded-3">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold">iCoder: Unleashing the power of code...</h1>
+            <p class="col-md-8 fs-4">
+                Welcome to iCoder, your ultimate destination for all things coding! In today's digital world, the
+                ability to code has become increasingly essential. Whether you're a beginner exploring the wonders of
+                programming or an experienced developer looking to stay up-to-date with the latest trends, iCoder is
+                here to guide you on your coding journey. Join us as we delve into the fascinating realm of programming,
+                share insightful tutorials, explore new technologies, and inspire each other to push the boundaries of
+                what can be achieved with code.
+            </p>
+            <button class="btn btn-dark btn-lg" type="button">Visit Blog</button>
+        </div>
     </div>
+
+    <div class="container" id="featuredBlogs">
+        <h1 class="fs-1 mb-4">Featured Blogs</h1>
+
+        <!-- Blogs starts here -->
+        <div class="card text-center my-4">
+            <div class="card-header">
+                Featured
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Special title treatment</h5>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <a href="/blog/" class="btn btn-primary">Read More</a>
+            </div>
+            <div class="card-footer text-body-secondary">
+                2 days ago
+            </div>
+        </div>
+        <div class="card mb-3">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <svg class="bd-placeholder-img img-fluid rounded-start" width="100%" height="250"
+                        xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image"
+                        preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6"
+                            dy=".3em">Image</text>
+                    </svg>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
+                            additional content. This content is a little bit longer.</p>
+                        <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                        <a href="/blog/" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock body %}
 
 
 <!-- JS -->
 {% block js %}
-    
+
 {% endblock js %}

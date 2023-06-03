@@ -9,7 +9,11 @@
 
 <!-- BODY -->
 {% block body %}
-    
+    <div class="container">
+        <h1>{{post.title}}</h1>
+        <h6>{{post.author}} - {{post.dateAdded}}</h6>
+        <p>{{post.content}}</p>
+    </div>
 {% endblock body %}
 
 

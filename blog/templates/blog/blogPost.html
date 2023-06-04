@@ -6,14 +6,16 @@
     
 {% endblock css %}
 
+<!-- Active nav links -->
+{% block blogactive %}active{% endblock blogactive %}
 
 <!-- BODY -->
 {% block body %}
-    <div class="container">
-        <h1>{{post.title}}</h1>
-        <h6>{{post.author}} - {{post.dateAdded}}</h6>
+    <article class="container">
+        <h1 class="blog-post-title link-body-emphasis">{{post.title}}</h1>
+        <p class="blog-post-meta">{{post.dateAdded}} by <a href="/about/">{{post.author}}</a></p>
         <p>{{post.content}}</p>
-    </div>
+    </article>
 {% endblock body %}
 
 

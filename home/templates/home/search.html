@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}Search Results{% endblock title %}
+
+<!-- css -->
+{% block css %}
+
+{% endblock css %}
+
+<!-- Active nav links -->
+{% block blogactive %}active{% endblock blogactive %}
+
+
+<!-- BODY -->
+{% block body %}
+<div class="container">
+    <h1 class="display-3 mb-2">Search Results</h1>
+    <h6>for query - <em>"{{query}}"</em></h6>
+    <h5 class="mb-4">(In {{time}}s)</h5>
+
+    {% if posts|length == 0 %}
+        <div>Your search query - <em>"{{query}}"</em> did not match any document.</div>
+
+        <div class="container my-3" id="suggestions">
+            <h5>Suggestions-</h5>
+            <ul>
+                <li>Try different keyword.</li>
+                <li>Make sure all the words are spelled correctly.</li>
+                <li>Try fewer keywords.</li>
+                <li>Try more general keywords.</li>
+            </ul>
+        </div>
+    {% else %}
+
+
+        <div class="container" id="blogs">
+
+            {% for post in posts %}
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <svg class="bd-placeholder-img img-fluid rounded-start" width="100%" height="250"
+                            xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image"
+                            preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6"
+                                dy=".3em">Image</text>
+                        </svg>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{post.title}}</h5>
+                            <p class="card-text">{{post.content|truncatewords:40}}</p>
+                            <p class="card-text"><small class="text-body-secondary">{{post.dateAdded}}</small></p>
+                            <a href="/blog/{{post.sno}}/{{post.slug}}/" class="btn btn-dark">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    {% endif %}
+
+
+</div>
+{% endblock body %}
+
+
+<!-- JS -->
+{% block js %}
+
+{% endblock js %}

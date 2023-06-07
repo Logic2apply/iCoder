@@ -1,5 +1,7 @@
+from sqlite3 import Timestamp
 from django.db import models
 from django.contrib import admin
+from django.contrib.auth.models import User
 from django.utils.text import slugify
 
 # Create your models here.
@@ -36,4 +38,27 @@ class BlogPostAdmin(admin.ModelAdmin):
         "author",
         "slug",
         "dateAdded"
+    ]
+
+
+# Comments
+class BlogComment(models.Model):
+    sno = models.AutoField(primary_key = True)
+    comment = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(BlogPost, on_delete=models.CASCADE)
+    parent = models.ForeignKey("self", on_delete=models.CASCADE, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f"{self.user} posted {self.comment} on post {self.post}. Its parent is {self.parent}"
+
+class BlogCommentAdmin(admin.ModelAdmin):
+    list_display = [
+        "sno",
+        "comment",
+        "user",
+        "post",
+        "parent",
+        "timestamp"
     ]

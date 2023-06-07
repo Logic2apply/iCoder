@@ -23,3 +23,10 @@ urlpatterns = [
     path("blog/", include("blog.urls")),
     path("authentication/", include("authentication.urls"))
 ]
+
+
+
+# Customise site dashboard
+admin.site.site_header = "iCoder Admin Panel"
+admin.site.site_title = "iCoder Admin Panel"
+admin.site.index_title = "iCoder administration"

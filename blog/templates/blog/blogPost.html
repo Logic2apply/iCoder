@@ -8,63 +8,125 @@
 
 <!-- Active nav links -->
 {% block blogactive %}active{% endblock blogactive %}
+{% load extras %}
 
 <!-- BODY -->
 {% block body %}
 
-    <div class="container">
-        <article class="container mb-4">
-            <h1 class="blog-post-title link-body-emphasis">{{post.title}}</h1>
-            <p class="blog-post-meta">{{post.dateAdded}} by <a href="/about/">{{post.author}}</a></p>
-            <p>{{post.content}}</p>
-        </article>
-    
-        <hr>
-    
-        <div class="container mt-4" id="divComments">
-            <h3 class="h3">Comments <small>({{comments.count}})</small></h3>
-            {% if user.is_authenticated %}
-                <form action="/blog/postComment/" method="post" class="mt-4 row d-flex align-items-end">
-                    {% csrf_token %}
-                    <div class="my-2 col-md-11">
-                        <label for="comment" class="form-label">Post Comment Here</label>
-                        <input type="text" id="comment" name="comment" placeholder="Comment Here" class="form-control">
-                    </div>
-                    <input type="hidden" name="postsno" value="{{post.sno}}">
-                    <div class="my-3 col-md-1">
-                        <button type="submit" class="btn btn-outline-dark">Submit</button>
-                    </div>
-                </form>
+<div class="container">
+    <article class="container mb-4">
+        <h1 class="blog-post-title link-body-emphasis">{{post.title}}</h1>
+        <p class="blog-post-meta">{{post.dateAdded}} by <a href="/about/">{{post.author}}</a> (<span class="fst-italic">{{post.views}} views</span>)</p>
+        <p>{{post.content|safe}}</p>
+    </article>
 
-            {% else %}
-            <div class="alert alert-secondary my-4" role="alert">
-                Please Sign In to Post a Comment.
+    <hr>
+
+    <div class="container mt-4" id="divComments">
+        <h3 class="h3">Comments <small>({{comments.count}})</small></h3>
+        {% if user.is_authenticated %}
+        <form action="/blog/postComment/" method="post" class="mt-4 row d-flex align-items-end">
+            {% csrf_token %}
+            <div class="my-2 col-md-11">
+                <label for="comment" class="form-label">Post Comment Here</label>
+                <input type="text" id="comment" name="comment" placeholder="Comment Here" class="form-control">
             </div>
-            {% endif %}
+            <input type="hidden" name="parentsno" value="">
+            <input type="hidden" name="postsno" value="{{post.sno}}">
+            <div class="my-3 col-md-1">
+                <button type="submit" class="btn btn-outline-dark">Submit</button>
+            </div>
+        </form>
 
-            <div class="container" id="comments">
-                {% for comment in comments %}
-                <div class="row my-3 alert alert-light">
-                    <div class="col-md-12 mb-2  d-flex align-items-center justify-content-start">
-                        <div class="material-symbols-outlined me-4">
-                            account_circle
+        {% else %}
+        <div class="alert alert-secondary my-4" role="alert">
+            Please Sign In to Post a Comment.
+        </div>
+        {% endif %}
+
+        <div class="container" id="comments">
+            {% for comment in comments %}
+            <div class="row my-3 alert alert-light">
+                <div class="col-md-12 mb-2  d-flex align-items-center justify-content-start">
+                    <div class="material-symbols-outlined me-4">
+                        account_circle
+                    </div>
+                    <h6 class="h6 mb-0">{{comment.user.first_name}} {{comment.user.last_name}}
+                        ({{comment.user.username}})</h6>
+                    {% load humanize %}
+                    <div class="align-self-end fst-light ms-4">{{comment.timestamp|naturaltime}}</div>
+                </div>
+                <div class="col-md-11 ps-5 fst-italic">
+                    {{comment.comment}}
+                </div>
+                <div class="col-md-1 m-0">
+                    <button class="btn btn-dark btn-sm d-flex align-items-center align-self-end" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#replybox{{comment.sno}}" aria-expanded="false"
+                        aria-controls="replybox{{comment.sno}}">
+                        <span class="material-symbols-outlined my-0 me-2">
+                            reply
+                        </span>
+                        <span>Reply</span>
+                    </button>
+                </div>
+
+                <div class="collapse col-md-12 mt-3" id="replybox{{comment.sno}}">
+                    <div class="card card-body">
+                        {% if user.is_authenticated %}
+                        <form action="/blog/postComment/" method="post" class="mt-2 row d-flex align-items-end">
+                            {% csrf_token %}
+                            <div class="my-2 col-md-11">
+                                <label for="comment" class="form-label">Post Comment Here</label>
+                                <input type="text" id="comment" name="comment" placeholder="Comment Here"
+                                    class="form-control">
+                            </div>
+                            <input type="hidden" name="parentsno" value="{{comment.sno}}">
+                            <input type="hidden" name="postsno" value="{{post.sno}}">
+                            <div class="my-3 col-md-1">
+                                <button type="submit" class="btn btn-outline-dark">Submit</button>
+                            </div>
+                        </form>
+                        {% else %}
+                        Please Sign In to reply!
+                        {% endif %}
+                    </div>
+                </div>
+
+                
+                {% if repDict|get_val:comment.sno %}
+                <div class="repliesdiv row m-0 mt-3">
+                    <h5 class="col-md-1">Replies</h5>
+                    <div class="replies col-md-11">
+                        {% for reply in repDict|get_val:comment.sno %}
+                        <div class="row my-3 alert alert-light">
+                            <div class="col-md-12 mb-2  d-flex align-items-center justify-content-start">
+                                <div class="material-symbols-outlined me-4">
+                                    account_circle
+                                </div>
+                                <h6 class="h6 mb-0">{{reply.user.first_name}} {{reply.user.last_name}}
+                                    ({{reply.user.username}})</h6>
+                                {% load humanize %}
+                                <div class="align-self-end fst-light ms-4">{{reply.timestamp|naturaltime}}</div>
+                            </div>
+                            <div class="col-md-11 ps-5 fst-italic">
+                                {{reply.comment}}
+                            </div>
                         </div>
-                        <h6 class="h6 mb-0">{{comment.user.first_name}} {{comment.user.last_name}} ({{comment.user.username}})</h6>
-                        {% load humanize %}
-                        <div class="align-self-end fst-light ms-4">{{comment.timestamp|naturaltime}}</div>
+                        {% endfor %}
+
                     </div>
-                    <div class="col-md-12 ps-5 fst-italic">
-                        {{comment.comment}}
-                    </div>
-                </div> 
-                {% endfor %}
+                </div>
+                    
+                {% endif %}
             </div>
+            {% endfor %}
         </div>
     </div>
+</div>
 {% endblock body %}
 
 
 <!-- JS -->
 {% block js %}
-    
+
 {% endblock js %}

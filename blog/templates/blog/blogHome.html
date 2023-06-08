@@ -32,9 +32,12 @@
                 <div class="col-md-8">
                     <div class="card-body">
                         <strong class="d-inline-block mb-2 text-success ">Article by {{ post.author }}</strong>
-                        <h5 class="card-title"><a class="text-dark link-underline link-underline-opacity-0" href="/blog/{{post.sno}}/{{post.slug}}/">{{post.title|truncatewords:15}}</a></h5>
+                        <h5 class="card-title"><a class="text-dark link-underline link-underline-opacity-0"
+                                href="/blog/{{post.sno}}/{{post.slug}}/">{{post.title|truncatewords:15}}</a></h5>
                         <!-- <h5 class="card-title">{{post.title|truncatewords:15}}</h5> -->
-                        <p class="card-text">{{post.content|truncatewords:30}}</p>
+                        <div class="preview">
+                            <p class="card-text">{{post.content|safe|truncatewords:30}}</p>
+                        </div>
                         <p class="card-text"><small class="text-body-secondary">{{post.dateAdded}}</small></p>
                         <a href="/blog/{{post.sno}}/{{post.slug}}/" class="btn btn-dark">Read More</a>
                     </div>
@@ -69,5 +72,10 @@
 
 <!-- JS -->
 {% block js %}
-
+<script>
+    let previews = document.getElementsByClassName("preview");
+    Array.from(previews).forEach((element)=>{
+        element.innerHTML = element.innerText;
+    });
+</script>
 {% endblock js %}

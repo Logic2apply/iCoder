@@ -21,7 +21,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("home.urls")),
     path("blog/", include("blog.urls")),
-    path("authentication/", include("authentication.urls"))
+    path("authentication/", include("authentication.urls")),
+    path('tinymce/',include('tinymce.urls'))    # TINYMCE TEXT EDITOR
 ]
 
 

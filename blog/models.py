@@ -1,8 +1,9 @@
-from sqlite3 import Timestamp
 from django.db import models
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.utils.text import slugify
+from tinymce.widgets import TinyMCE
+
 
 # Create your models here.
 class BlogPost(models.Model):
@@ -10,8 +11,9 @@ class BlogPost(models.Model):
     title = models.CharField(max_length=500, default="")
     content = models.TextField(max_length=50000, default="")
     author = models.CharField(max_length=50, default="")
-    slug = models.TextField(max_length=150, default="", unique=True)
-    dateAdded = models.DateField(auto_now_add=True)
+    slug = models.CharField(max_length=150, default="", unique=True)
+    views = models.IntegerField(default=0)
+    dateAdded = models.DateTimeField(auto_now_add=True)
 
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
@@ -39,6 +41,9 @@ class BlogPostAdmin(admin.ModelAdmin):
         "slug",
         "dateAdded"
     ]
+    formfield_overrides = {
+        models.TextField: {'widget': TinyMCE()}
+    }
 
 
 # Comments
